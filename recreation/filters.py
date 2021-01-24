@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from .utils import tokenize, represents_int
 
 
-class Filters():
+class AvailabilityFilters():
     datefmt = '%Y-%m-%dT%H:%M:%SZ'
     DEFAULT_FILTERS = [
         ('available', True),

@@ -6,18 +6,16 @@ from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 from pprint import pprint
 
-import requests
 from dateutil.parser import parse
 from yaml import FullLoader, load
-from fake_useragent import UserAgent
 
-from .filters import Filters
+from .filters import AvailabilityFilters
 from .utils import next_month, represents_int, this_month
+from ._requests import get_anonymous_session
 
 API_URL = "https://www.recreation.gov/api/recommendation/recommend"
-HEADERS = {'User-Agent': UserAgent().random}
 
-
+sess = get_anonymous_session()
 class Availability():
     """This class  uses the month api to obtain availability information for a campground.
     """
@@ -27,7 +25,6 @@ class Availability():
     def __init__(self, asset_id: int, filters=None, headers=None):
         self.asset_id = asset_id
         self.filters = filters
-        self.headers = headers or HEADERS
 
     def check(self):
         """Checks all months and returns their results as a dict
@@ -65,8 +62,7 @@ class Availability():
         if not all([month.day == 1, month.hour == 0, month.minute == 0, month.second == 0]):
             raise ValueError("Month must have day=1 and h/m/s=0")
         params = {'start_date': month.isoformat() + ".000Z"}
-        resp = requests.get(self._URL_MONTH.format(
-            asset_id=self.asset_id), params=params, headers=self.headers)
+        resp = sess.get(self._URL_MONTH.format(asset_id=self.asset_id), params=params)
         return resp.json()
 
     def check_month(self, month: datetime) -> list:
@@ -78,7 +74,7 @@ class Availability():
         :rtype: list
         """
         objs = self.get_month_dict(month)
-        filt = Filters(self.filters)
+        filt = AvailabilityFilters(self.filters)
         return filt.filter(objs)['campsites']
 
 
