@@ -1,0 +1,6 @@
+requests
+beautifulsoup4
+twilio
+pyyaml
+python-dateutil
+fake_useragent
