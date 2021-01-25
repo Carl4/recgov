@@ -3,4 +3,3 @@ twilio
 pyyaml
 python-dateutil
 fake_useragent
-pandas

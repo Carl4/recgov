@@ -10,6 +10,7 @@ from dateutil.parser import parse
 from yaml import FullLoader, load
 
 from .filters import AvailabilityFilters
+from .campsites import get_campsites
 from .utils import next_month, represents_int, this_month
 from ._requests import get_anonymous_session
 
@@ -25,6 +26,7 @@ class Availability():
     def __init__(self, asset_id: int, filters=None, headers=None):
         self.asset_id = asset_id
         self.filters = filters
+        self.campsites = get_campsites(asset_id)
 
     def check(self):
         """Checks all months and returns their results as a dict
@@ -46,9 +48,15 @@ class Availability():
             end_month = next_month(start_month)
 
         mo = start_month
+        result = {}
         while mo <= end_month:
-            yield mo.strftime("%Y-%m"), self.check_month(mo)
+            for k,v in self.check_month(mo).items():
+                if k in result:
+                    result[k]['availabilities'].update(v['availabilities'])
+                else:
+                    result[k]=v
             mo = next_month(mo)
+        return result
 
     def get_month_dict(self, month: datetime) -> dict:
         """Gets the month json object
