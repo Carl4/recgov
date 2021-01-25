@@ -1,8 +1,9 @@
-from ._requests import get_session
-from json import dumps
 from datetime import date
-from operator import itemgetter
 from itertools import groupby
+from json import dumps
+from operator import itemgetter
+
+from ._requests import get_session
 
 
 class Campsite(dict):
@@ -153,15 +154,17 @@ class CampsiteSet(dict):
                             if v.available_nights > 0})
 
 
-def get_campsites(asset: int) -> CampsiteSet:
+def get_campsites(asset: int, apikey=None) -> CampsiteSet:
     """Gets a CampsiteSet for the given asset.
 
     :param asset: the asset id from recreation.gov
     :type asset: int
+    :param apikey: An API Key if you haven't set the environment variable
+    :type apikey: str
     :return: a CampsiteSet you can filter.
     :rtype: CampsiteSet
     """
-    sess = get_session()
+    sess = get_session(apikey=apikey)
     resp = sess.get_record_iterator(
         f"https://ridb.recreation.gov/api/v1/facilities/{asset}/campsites")
     return CampsiteSet({x['CampsiteID']: Campsite(x) for x in resp})

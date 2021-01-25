@@ -1,8 +1,8 @@
 """Checks availability at a set of sites I'm interested in staying at.
 """
 
-from recreation.availability import Availability, HEADERS
-from recreation._requests import get_session
+from recgov.availability import Availability
+from recgov._requests import get_session
 from os import path, environ
 from yaml import load, FullLoader, dump
 from pprint import pprint
@@ -10,10 +10,10 @@ import requests
 from gzip import open as gzopen
 
 BASEDIR=path.dirname(__file__)
-
+APIKEY=environ.get('RECREATION_GOV_KEY')
 
 def main():
-    sess = get_session()
+    sess = get_session(apikey=APIKEY)
 
     # Load the config file.
     with open(path.join(BASEDIR, 'config.yml'), 'rb') as fh:

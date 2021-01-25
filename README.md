@@ -12,11 +12,15 @@ You can either store the API KEY in your environment variables as `RECREATION_GO
 or you can pass it to your `_session.get_session` calls (much trickier -- not really 
 supported).
 
-Install the requirements: 
+To install from the checked out code:
 ``` bash
-pip install -r requirements.txt
+pip install .
 ```
 
+To make a link in python to the current code-base:
+```bash
+pip install --editable .
+```
 
 # Generalizing the script:
 

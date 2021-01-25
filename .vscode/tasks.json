@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+            "label": "pep517 build",
+			"type": "process",
+			"command": "${config:python.pythonPath}",
+			"group": "build",
+			"detail": "Build a python module with pep517",
+            "args": [ "-m", "pep517.build", "."]
+        },
+	]
+}
