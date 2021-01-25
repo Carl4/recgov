@@ -1,0 +1,170 @@
+.campsite_filters: &id001
+  exclude_by_campsite_type:
+    args:
+    - MANAGEMENT
+    - GROUP
+  filter_by_equipment:
+    args:
+    - Trailer
+    - 20
+tasks:
+- asset_id: 232463
+  availability_filters:
+    end_date: 2021-05-30 00:00:00
+    start_date: 2021-05-10 00:00:00
+  campsite_filters: *id001
+  name: Moraine Park Campground
+  status:
+    available_campsites:
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/2181
+      loop: A Loop
+      name: A032
+      site_id: '2181'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/2189
+      loop: A Loop
+      name: A040
+      site_id: '2189'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/1587
+      loop: A Loop
+      name: A041
+      site_id: '1587'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/1588
+      loop: A Loop
+      name: A042
+      site_id: '1588'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/1590
+      loop: A Loop
+      name: A044
+      site_id: '1590'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/1593
+      loop: A Loop
+      name: A047
+      site_id: '1593'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/1595
+      loop: A Loop
+      name: A049
+      site_id: '1595'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/1596
+      loop: A Loop
+      name: A050
+      site_id: '1596'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/1598
+      loop: A Loop
+      name: A053
+      site_id: '1598'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/1600
+      loop: A Loop
+      name: A055
+      site_id: '1600'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/1603
+      loop: A Loop
+      name: A058
+      site_id: '1603'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/1604
+      loop: A Loop
+      name: A059
+      site_id: '1604'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/1605
+      loop: A Loop
+      name: A060
+      site_id: '1605'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/2282
+      loop: B Loop
+      name: B181
+      site_id: '2282'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/2195
+      loop: B Loop
+      name: B183
+      site_id: '2195'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/2283
+      loop: B Loop
+      name: B186
+      site_id: '2283'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/2290
+      loop: B Loop
+      name: B198
+      site_id: '2290'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/2324
+      loop: B Loop
+      name: B213
+      site_id: '2324'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/2329
+      loop: B Loop
+      name: B221
+      site_id: '2329'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/2296
+      loop: B Loop
+      name: B223
+      site_id: '2296'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/2299
+      loop: C Loop
+      name: C228
+      site_id: '2299'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/3007
+      loop: C Loop
+      name: C237
+      site_id: '3007'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/3011
+      loop: C Loop
+      name: C239
+      site_id: '3011'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/3018
+      loop: C Loop
+      name: C243
+      site_id: '3018'
+    - availabilities:
+      - '2021-05-27'
+      link: https://www.recreation.gov/camping/campsites/2306
+      loop: C Loop
+      name: C245
+      site_id: '2306'
+    check_completed: 2021-01-24 20:39:43.206397-05:00
+    duration: 8.924532

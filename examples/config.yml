@@ -1,0 +1,13 @@
+---
+.campsite_filters: &campsite_filters
+  exclude_by_campsite_type: 
+    args: ["MANAGEMENT", "GROUP"]
+  filter_by_equipment:  
+    args: ["Trailer", 20]
+tasks:
+- name: Moraine Park Campground
+  asset_id: 232463
+  campsite_filters: *campsite_filters
+  availability_filters:
+    start_date: 2021-05-10T00:00:00
+    end_date: 2021-05-30T00:00:00

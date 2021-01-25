@@ -4,6 +4,7 @@ from datetime import date
 from operator import itemgetter
 from itertools import groupby
 
+
 class Campsite(dict):
 
     @property
@@ -31,16 +32,17 @@ class Campsite(dict):
         avail = [date.fromisoformat(k[:10])
                  for k, v in self.get('availabilities', {}).items()
                  if v == "Available"]
-        # Consolidate to ranges of dates. Adapted from 
+        # Consolidate to ranges of dates. Adapted from
         #   See https://docs.python.org/2.6/library/itertools.html#examples
+
         def delta(ndx):
             return ndx[0] - ndx[1].toordinal()
 
-        consecutive_days = [[x[1] for x in g] 
+        consecutive_days = [[x[1] for x in g]
                             for k, g in groupby(enumerate(avail), delta)]
 
         def cleanup_sets(dayset: list) -> str:
-            if len(dayset)==1:
+            if len(dayset) == 1:
                 return dayset[0].isoformat()
             return dayset[0].isoformat() + " to " + dayset[-1].isoformat()
 
@@ -53,7 +55,8 @@ class Campsite(dict):
         :return: Number of nights available
         :rtype: int
         """
-        avail = self.get('availabilities')
+        avail = [x for x in self.get(
+            'availabilities').values() if x == "Available"]
         if avail is not None:
             return len(avail)
 
@@ -73,6 +76,12 @@ class Campsite(dict):
     def site_url(self):
         return f"https://www.recreation.gov/camping/campsites/{self.id}"
 
+    def __gt__(self, other: "Campsite") -> bool:
+        return self.loop+self.name > other.loop+other.name
+
+    def __lt__(self, other: "Campsite") -> bool:
+        return self.loop+self.name < other.loop+other.name
+
 
 class CampsiteSet(dict):
     """A set of Campsite objects indexed on their site id.
@@ -84,7 +93,7 @@ class CampsiteSet(dict):
         :param availability: a dictionary of availability date from the month endpoint.
         :type availability: dict
         """
-        for k,v in availability.items():
+        for k, v in availability.items():
             if k in self:
                 self[k]['availabilities'] = v['availabilities']
 
@@ -137,7 +146,11 @@ class CampsiteSet(dict):
                 raise ValueError(f"Unknown filter, {filter}")
             result = getattr(result, filter)(
                 *params.get('args', []), **params.get('kwargs', {}))
-        return result
+        return CampsiteSet(result)
+
+    def with_availability(self) -> 'CampsiteSet':
+        return CampsiteSet({k: v for k, v in self.items()
+                            if v.available_nights > 0})
 
 
 def get_campsites(asset: int) -> CampsiteSet:
