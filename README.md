@@ -35,7 +35,6 @@ Common fields used across the api:
 | name              | Campsite name (often a number)                    |
 | org_name          | Who owns the campsite                             |
 | loop              | The loop where you can find the site              |
-| permitted_equipment| 
 
 The most promising undocumented endpoint is here: 
 
