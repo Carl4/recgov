@@ -3,20 +3,22 @@ These classes interface with select components in the recreation.gov API.
 
 """
 from copy import deepcopy
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 
 from ._requests import get_anonymous_session
 from .campsites import Campsite, get_campsites
-from .utils import next_month, represents_int, this_month
+from .utils import next_month
 
 API_URL = "https://www.recreation.gov/api/recommendation/recommend"
-
+RECGOV = "https://www.recreation.gov"
 sess = get_anonymous_session()
+
+
 class Availability(dict):
-    """This class  uses the month api to obtain availability information for a campground.
+    """This class  uses the month api to obtain availability for a campground.
     """
-    _URL_MONTH = "https://www.recreation.gov/api/camps/availability/campground/{asset_id}/month"
-    _CLICK_URL = "https://www.recreation.gov/camping/campgrounds/{asset_id}"
+    _URL_MONTH = RECGOV+"/api/camps/availability/campground/{asset_id}/month"
+    _CLICK_URL = RECGOV+"/camping/campgrounds/{asset_id}"
     datefmt = '%Y-%m-%dT%H:%M:%SZ'
 
     def __init__(self, asset_id: int, headers=None):
@@ -25,10 +27,11 @@ class Availability(dict):
         super().__init__()
 
     def apply_filters(self, filters: dict):
-        """Checks all months  for availability, filters the result, and returns their results as a dict
+        """Checks all months  for availability, filters the result, and
+           returns their results as a dict
 
-        :raises RuntimeError: If required filters missing (must have a start_date). 
-        :yield: month string, dict 
+        :raises RuntimeError: If required filters missing (start_date)
+        :yield: month string, dict
         :rtype: Iterator[(str, dict)]
         """
         if 'start_date' in filters:
@@ -44,7 +47,7 @@ class Availability(dict):
             end_month = next_month(start_month)
 
         mo = start_month
-        
+
         while mo <= end_month:
             self.retrieve_month(mo, filters)
             mo = next_month(mo)
@@ -59,14 +62,16 @@ class Availability(dict):
         :rtype: dict
         """
         # Clobber day, hour, minute, second
-        if not all([month.day == 1, month.hour == 0, month.minute == 0, month.second == 0]):
+        if not all([month.day == 1, month.hour == 0,
+                    month.minute == 0, month.second == 0]):
             raise ValueError("Month must have day=1 and h/m/s=0")
         params = {'start_date': month.isoformat() + ".000Z"}
-        resp = sess.get(self._URL_MONTH.format(asset_id=self.asset_id), params=params)
+        resp = sess.get(self._URL_MONTH.format(
+            asset_id=self.asset_id), params=params)
         return resp.json()
 
     def merge_availabilities(self, other):
-        for k,v in other.items():
+        for k, v in other.items():
             if k in self:
                 if 'availabilities' in self[k]:
                     self[k]['availabilities'].update(v['availabilities'])
@@ -99,9 +104,9 @@ class Availability(dict):
         :param obj: [description]
         :type obj: dict
         """
-        filter_name, filter_params = filter 
+        filter_name, filter_params = filter
         filter_function = getattr(self, f"filter_{filter_name}", None)
-        if filter_function is None: 
+        if filter_function is None:
             raise RuntimeError(f"Unrecognized filter name: {filter_name}")
         return filter_function(filter_params)
 
@@ -110,14 +115,18 @@ class Availability(dict):
 
         :param start: [description]
         :type start: [type]
-        """        
+        """
         obj = deepcopy(self)
         for data in obj.values():
-            data['availabilities'] = {k:v for k,v in data['availabilities'].items()
-            if datetime.strptime(k, self.datefmt) >= start }
+            data['availabilities'] = \
+                {
+                    k: v
+                    for k, v in data['availabilities'].items()
+                    if datetime.strptime(k, self.datefmt) >= start
+                }
         return obj
 
-    def filter_end_date(self, end:datetime):
+    def filter_end_date(self, end: datetime):
         """Filters the object on end dates
 
         :param start: [description]
@@ -125,11 +134,14 @@ class Availability(dict):
         """
         obj = deepcopy(self)
 
-        def check_time(time:datetime):
+        def check_time(time: datetime):
             return datetime.strptime(time, self.datefmt) <= end
 
         for data in obj.values():
-            data['availabilities'] = {k:v for k,v in data['availabilities'].items() if check_time(k) }
+            data['availabilities'] = {
+                k: v
+                for k, v in data['availabilities'].items()
+                if check_time(k)
+                }
 
         return obj
-
