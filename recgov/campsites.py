@@ -1,12 +1,13 @@
 from datetime import date
 from itertools import groupby
 from json import dumps
-from operator import itemgetter
 
 from ._requests import get_session
 
 
 class Campsite(dict):
+    """Describes a campsite object from recreation.gov
+    """
 
     @property
     def id(self):
@@ -26,7 +27,8 @@ class Campsite(dict):
 
     @property
     def attributes(self):
-        return {x['AttributeName']: x['AttributeValue'] for x in self['ATTRIBUTES']}
+        return {x['AttributeName']: x['AttributeValue']
+                for x in self['ATTRIBUTES']}
 
     @property
     def availabilities(self):
@@ -63,15 +65,21 @@ class Campsite(dict):
 
     @property
     def permitted_equipment_lengths(self):
-        return {x['EquipmentName']: x['MaxLength'] for x in self['PERMITTEDEQUIPMENT']}
+        return {x['EquipmentName']: x['MaxLength']
+                for x in self['PERMITTEDEQUIPMENT']}
 
-    def supports_equipment(self, equipment_name: str, equipment_length: float) -> bool:
-        return self.permitted_equipment_lengths.get(equipment_name, -1) > equipment_length
+    def supports_equipment(self,
+                           equipment_name: str,
+                           equipment_length: float) -> bool:
+        max_length = self.permitted_equipment_lengths.get(equipment_name, -1)
+        return max_length >= equipment_length
 
     def __repr__(self):
         availabilities = f" availabilities={dumps(self.availabilities)} "
-        return f"<campsite id={dumps(self.id)} name={dumps(self.name)} type={dumps(self.site_type)} " + \
-               f"facility={dumps(self['FacilityID'])} loop={dumps(self.loop)} {availabilities}/>"
+        return f"<campsite id={dumps(self.id)} name={dumps(self.name)} " + \
+               f"type={dumps(self.site_type)} " + \
+               f"facility={dumps(self['FacilityID'])} " + \
+               f"loop={dumps(self.loop)} {availabilities}/>"
 
     @property
     def site_url(self):
@@ -91,7 +99,7 @@ class CampsiteSet(dict):
     def ingest_availability(self, availability: dict) -> None:
         """ingests availability data to the campsites.
 
-        :param availability: a dictionary of availability date from the month endpoint.
+        :param availability: availability date from the month endpoint.
         :type availability: dict
         """
         for k, v in availability.items():
@@ -107,14 +115,19 @@ class CampsiteSet(dict):
         """
         return CampsiteSet({x['CampsiteID']: Campsite(x) for x in campsites})
 
-    def filter_by_equipment(self, equipment_name: str, equipment_length: float) -> 'CampsiteSet':
+    def filter_by_equipment(self,
+                            equipment_name: str,
+                            equipment_length: float) -> 'CampsiteSet':
         """Returns a smaller CampsiteSet that supports the given equipment.
 
         :return: the filtered set of campsites based on the specified equipment
         :rtype: CampsiteSet
         """
-        return CampsiteSet({x['CampsiteID']: Campsite(x) for x in self.values()
-                            if x.supports_equipment(equipment_name, equipment_length)})
+        return CampsiteSet({x['CampsiteID']: Campsite(x)
+                            for x in self.values()
+                            if x.supports_equipment(equipment_name,
+                                                    equipment_length)
+                            })
 
     @property
     def unique_campsite_types(self):
