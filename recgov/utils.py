@@ -3,7 +3,9 @@
 from datetime import datetime, timedelta
 
 # To find the next month easily: Add 31 days, then truncate back to day 1.
-def this_month(month:datetime) -> datetime:
+
+
+def this_month(month: datetime) -> datetime:
     """Find the first day of this month given a datetime.
 
     :param month: the date
@@ -14,8 +16,10 @@ def this_month(month:datetime) -> datetime:
     return datetime(month.year, month.month, 1)
 
 
-_A_MONTH = timedelta(days=31)                                                                                                                                          
-def next_month(month:datetime) -> datetime:
+_A_MONTH = timedelta(days=31)
+
+
+def next_month(month: datetime) -> datetime:
     """Find the first day of the next month given a datetime.
 
     :param month: the date
@@ -24,7 +28,8 @@ def next_month(month:datetime) -> datetime:
     :rtype: datetime
     """
     dt = this_month(month)
-    return datetime((dt+_A_MONTH).year, (dt+_A_MONTH).month, 1) 
+    return datetime((dt+_A_MONTH).year, (dt+_A_MONTH).month, 1)
+
 
 def tokenize(string: str) -> [str]:
     """Tokenize a string.
@@ -34,7 +39,8 @@ def tokenize(string: str) -> [str]:
     """
     return string.split(" ")
 
-def represents_int(s:str) -> bool: 
+
+def represents_int(s: str) -> bool:
     """Checks if a string can be an integer
 
     :param s: [description]
@@ -49,4 +55,3 @@ def represents_int(s:str) -> bool:
         return True
     except ValueError:
         return False
-
