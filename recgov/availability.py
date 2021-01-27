@@ -19,7 +19,7 @@ class Availability(dict):
     """
     _URL_MONTH = RECGOV+"/api/camps/availability/campground/{asset_id}/month"
     _CLICK_URL = RECGOV+"/camping/campgrounds/{asset_id}"
-    datefmt = '%Y-%m-%dT%H:%M:%SZ'
+    datefmt = '%Y-%m-%dT%H:%M:%S%z'
 
     def __init__(self, asset_id: int, headers=None):
         self.asset_id = asset_id
