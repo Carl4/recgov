@@ -1,6 +1,8 @@
 {
     "python.testing.pytestArgs": [
-        "recgov"
+        "recgov",
+        "--cov=recgov",
+        "--cov-config=.coveragerc"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.nosetestsEnabled": false,
