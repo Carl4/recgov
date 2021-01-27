@@ -33,7 +33,7 @@ class Campsite(dict):
     @property
     def availabilities(self):
         avail = [date.fromisoformat(k[:10])
-                 for k, v in self.get('availabilities', {}).items()
+                 for k, v in self.get('availabilities', dict()).items()
                  if v == "Available"]
         # Consolidate to ranges of dates. Adapted from
         #   See https://docs.python.org/2.6/library/itertools.html#examples
