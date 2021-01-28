@@ -1,6 +1,7 @@
 # recgov
 Python modules to interface with [recreation.gov](https://recreation.gov/) in order
-to find suitable availability.
+to find suitable availability.  The soruce code is on
+[GitHub](https://github.com/Carl4/recgov/)
 
 ## Usage:
 

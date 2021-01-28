@@ -14,7 +14,8 @@
             "cwd": "${workspaceFolder}",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}"
-            }
+            },
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
